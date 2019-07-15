@@ -1,0 +1,420 @@
+\documentclass[a4paper,12pt]{report}
+\pdfoutput=1
+\usepackage[utf8]{inputenc}
+\usepackage[utf8]{inputenc}
+\usepackage[scale=0.8]{geometry} % Push boundaries to edges
+\usepackage{bm} %this package gives bold maths with command \bm{}
+\usepackage{graphicx} %graphics package for adding images/figures
+	\graphicspath{{images/}}
+\usepackage{amsmath, amssymb} %adds range of math symbols and functions
+\usepackage{gensymb}
+\usepackage{subcaption}
+\usepackage{stfloats}
+\usepackage{textcomp}
+\usepackage{float}
+\usepackage{cite}
+\usepackage{hyperref}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage[titletoc]{appendix}
+\usepackage{dutchcal}
+\usepackage{comment}
+\usepackage{setspace}
+\usepackage{physics}
+
+
+
+\title{Tight Binding & Graphene}
+\author{Itsaso Blanco }
+\date{June 2019}
+
+\begin{document}
+
+\newpage
+\tableofcontents
+\newpage
+
+\chapter{Tight Binding Model}
+
+\section{1D Chain}
+
+
+The 1D chain is the most basic example of tight binding. We asumme the atoms interact onyl with their nearest neighboours (throught the hopping integral \textbf{t}, as seen in the image). The parameter \textbf{a} denotes the separation between each of the atoms. 
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=5in]{images/1dchain.png}
+	\end{center}
+	\caption{Diagram showcasing a 1-dimensional atomic chain and the hopping integral between atoms.} 
+	\label{fig:1dchaindiagram}
+\end{figure}
+
+We denote the Hamiltonian as the sum of the atomic individual Hamiltonians and the interaction potential. 
+
+$$ H = H_{at} + U $$
+
+The Schrodinger equation for this Hamiltonian is the following:
+
+$$ H_{at} \ket{\psi} = E_{at} \ket{\psi} $$
+
+where $ E_{t} $ is the individual energies of the atoms, and $\psi$ are the individual atomic wavefunctions. We note that $\Psi$ are the wavefunctions related to the band structure and these are a linear combination of the atomic set. 
+
+For the total energy, the Schrodinger equation becomes the following:
+
+$$ H \ket{\Psi} = E_k \ket{\Psi} $$
+
+For more complicated problems, this can be solved through the characteristic equation. However, for a 1 dimensional problem this is not useful. We can compute the expectation value of the energy and obtain a value for the band. We already know the expectation value for the individual atomic Hamiltonian, so we need to compute the expectation value of the interaction potential. 
+
+$$ \bra{\Psi_k} U (n, n \pm 1) \ket{\Psi_k} $$
+
+This can be translated into the following equation, by taking into account Bloch's Theorem: 
+
+$$ \bra{\psi_n} U(n, n \pm 1) \ket{\psi_n} = t$$ if $n''=n$ and $n'=n \pm 1 $
+
+$$ \bra{\psi_n} U(n, n \pm 1) \ket{\psi_n} = 0 $$ otherwise 
+
+This means that we are only taking into account the interaction between nearest neighbours, which is given by the hopping integral *t*.
+
+Therefore, we obtain:
+
+$$ E_k = E_{at} - t( e^{ika} + e^{-ika} ) = E_{at} - t(2coska) $$
+
+
+This result can be visualised through a Python code that plots and outputs the energy band corresponding to the system. 
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=5in]{images/energyband1dchain.PNG}
+	\end{center}
+	\caption{Diagram showcasing a 1-dimensional atomic chain energy band.} 
+	\label{fig:1dchainenergyband}
+\end{figure}
+
+\section{2 Atomic Chains}
+In this case, instead of 2 nearest neighbours, we can see that each atom in our system will have 4 nearest neighbours, which means that we will have to include 2x2 matrices in our equations. 
+
+We define the different tight binding parameters as $\alpha$ for the onsite energies and the interactions within the unit cell and $\gamma$ for the interactions for nearest neighbours. 
+
+$$        \mathbf{\alpha} = \begin{pmatrix}
+\alpha_1 & t_2  \\
+t_2 & \alpha_2 \\
+\end{pmatrix}
+$$
+
+$$        \mathbf{\gamma} = \begin{pmatrix}
+t_1 & 0  \\
+0 & t_1 \\
+\end{pmatrix}
+$$
+
+The $\alpha$ elements in the matrix are the onsite energies of the atoms, which can be set to 0. We note that the $\gamma$ matrix is hermitian. The Hamiltonian becomes:
+
+$$ H = - \alpha -\gamma(e^{ika} + e^{-ika}) $$
+
+The result of this calculation is the following:
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=5in]{images/energyband2chains.PNG}
+	\end{center}
+	\caption{Diagram showcasing the energy bands of a 2 chain atomic system.} 
+	\label{fig:2chainsenergybands}
+\end{figure}
+
+As we can see, a band gap opens in the energy bands of this new system. 
+
+In this introduction we have done the easiest examples of the tight-binding approach. Now, we will move on to more complex systems, such as graphene nanoribbons and graphene itself.
+
+
+
+\chapter{GNRs}
+
+Graphene Nanoribbons are a 1D system of multiple atom arranged in a honeycomb lattice. This can be modelled as seen in the figure below.
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=5in]{images/graphenestructure2.PNG}
+	\end{center}
+	\caption{Diagram showcasing a 1-dimensional GNR structure.} 
+	\label{fig:GNRstructure}
+\end{figure}
+
+The relevant atomic orbital that gives graphene its properties is the $p_z$ orbital, located perpendicular to the plane. This orbital is left unfilled by the bonding electrons and therefore is the most important one. This orbital can accomodate two electron with spin projection of $\pm 1$. In this case, the nearest neighbour hopping integral value has been experimentally determined to be around $2.7 eV$.
+
+The Hamiltonian, setting the onsite energies to 0 and taking only into account nearest neighbours, will have the following form: 
+
+$$        \mathbf{H} = \begin{pmatrix}
+0 & -t  & 0   & -t    &  0  &  0  & 0  & 0  &  0  &  0  &  0  &  0  &  0  &  0  \\
+-t & 0  & -t   & 0    &  0  &  0  & 0  & 0  &  0  &  0  &  0  &  0  &  0  &  0 \\
+0 & -t  & 0   & -te^{ika}    &  0  &  -t  & 0  & 0  &  0  &  0  &  0  &  0  &  0  &  0 \\
+-t & 0  & -te^{-ika}   & 0    &  -t  &  0  & 0  & 0  &  0  &  0  &  0  &  0  &  0  &  0 \\
+0 & 0  & 0   & -t    &  0  &  -t  & 0  & -t  &  0  &  0  &  0  &  0  &  0  &  0 \\
+0 & 0  & -t   & 0    &  -t  &  0  & -t  & 0  &  0  &  0  &  0  &  0  &  0  &  0 \\
+0 & 0  & 0   & 0    &  0  &  -t  & 0  & -te^{ika}  &  0  &  -t  &  0  &  0  &  0  &  0 \\
+0 & 0  & 0   & 0    &  -t  &  0  & -te^{-ika}  & 0  &  -t  &  0  &  0  &  0  &  0  &  0 \\
+0 & 0  & 0   & 0    &  0  &  0  & 0  & -t  &  0  &  -t &  0  &  -t  &  0  &  0 \\
+0 & 0  & 0   & 0    &  0  &  0  & -t  & 0  &  -t  &  0  &  -t  &  0  &  0  &  0 \\
+0 & 0  & 0   & 0    &  0  &  0  & 0  & 0  &  0  &  -t  &  0  &  -te^{ika}  &  0  &  -t \\
+0 & 0  & 0   & 0    &  0  &  0  & 0  & 0  &  -t  &  0  &  -te^{-ika}  &  0  &  -t  &  0 \\
+0 & 0  & 0   & 0    &  0  &  0  & 0  & 0  &  0  &  0  &  0  &  -t  &  0  &  -t \\
+0 & 0  & 0   & 0    &  0  &  0  & 0  & 0  &  0  &  0  &  -t  &  0  &  -t  &  0 \\
+\end{pmatrix}
+$$
+
+
+This $ 14 x 14 $ matrix can be understood if we consider a 3 hexagon unit cell. As the diagram above suggests, this would imply a 14 atom basis, making the Hamiltonian a 14 dimension matrix. We will only consider contributions from nearest neighbours. After diagonalizing the above matrix, we find that the k-dependent eigenvalues form energy bands as follows.
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=5in]{images/energybandnanoribbon.PNG}
+	\end{center}
+	\caption{Diagram showcasing the energy bands of a graphene nanoribbon.} 
+	\label{fig:GNRbands}
+\end{figure}
+
+
+\chapter{Graphene}
+
+Graphene, as a carbon compound, has been extremely studied for its electronic properties. This is particularly interesting due to it being a real 2D system. 
+
+In this section, we will analyse its bands throught the tight-binding approach. However, later, we will see that this can be done in a much easier way using a Python package called "sisl". 
+
+The modelling of graphene as a two dimensional system implies the existance of two lattice vectors, which involved 2 k-components. Below, we can see a diagram of how we are going to model graphene. Its unit cell is compromised of 2 carbon atoms, and the honeycomb structure can be built through the periodic repetition along the two lattice vectors. 
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=5in]{images/graphene2d.PNG}
+	\end{center}
+	\caption{Diagram showcasing the 2D graphene system.} 
+	\label{fig:graphene2d}
+\end{figure}
+
+
+Again, setting the onsite energies to zero, and taking into account the coupling between nearest neighbours, the Hamiltonian will have the following form: 
+
+
+
+$$        \mathbf{H} = \begin{pmatrix}
+E_0 & -t + -te^{-ika_1} -te^{-ika_2}  \\
+-t -te^{ika_1} -te^{ika_2} & E_0 \\
+\end{pmatrix}
+$$
+
+After diagonilizing this matrix, we can visualise the electronic bands as a 2D contour plot and a 3D plot.
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=5in]{images/contourplotgraphene.PNG}
+	\end{center}
+	\caption{Diagram showcasing the graphene electronic bands as a 2D contour plot.} 
+	\label{fig:graphene2dbandscontour}
+\end{figure}
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=5in]{images/3dgraphenebands.PNG}
+	\end{center}
+	\caption{Diagram showcasing the 3D electronic bands of graphene.} 
+	\label{fig:graphene2d}
+\end{figure}
+
+
+\chapter{SISL}
+
+In this chapter, we will explore the methods to calculate the electronic bands using a Python package called "sisl". It is a much faster and efficient way of building the Hamiltonian of a particular system, and it allows the user to construct the specific geometry that is needed. This proves to be particularly useful when needing to build Nanoribbons with some atoms removed from the geometry. 
+
+\section{Graphene}
+
+A analysis of the graphene geometry using sisl yields the following results for its electronic bands. Keep in mind that the k-path that has been chosen is from $\Gamma$ (0,0,0) to M and then back to $\Gamma$. This is the path graphene usually takes in k-space. This calculation was done only taking into account nearest neighbours.
+
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=3in]{images/graphenesisl.PNG}
+	\end{center}
+	\caption{Diagram showcasing the electronic bands of graphene (calculated with sisl).} 
+	\label{fig:graphenesisl}
+\end{figure}
+
+
+A more thorough and complex calculation can be done if third and fourth nearest neighbours are taken into account. This can be seen below. The results differs slightly from the previous one. However, it can be seen that the nearest neighbours approximation is usually enough to understand the shape of the electronic bands.
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=3in]{images/graphenesislbeyond.PNG}
+	\end{center}
+	\caption{Diagram showcasing the electronic bands of graphene beyond nearest neighbours (calculated with sisl).} 
+	\label{fig:graphenesislbeyond}
+\end{figure}
+
+\section{Bilayer Graphene}
+
+When graphene layers are stacked on top of each other, a more complex system with different electronic properties is created. This means that they create a van der Waals heterostructure, which means that the forces between layers are van der Waals. 
+
+Bilayer graphene can exist in the AB, or Bernal-stacked form, where half of the atoms lie directly over the center of a hexagon in the lower graphene sheet, and half of the atoms lie over an atom, or, less commonly, in the AA form, in which the layers are exactly aligned Twisted layers, where one layer is rotated relative to the other, have also been observed. 
+
+The binding energies of both types of stacking have been calculated, and it has been found that the AB stacking has a higher binding energy than the AA stacking, making AB stacked bilayer graphene more stable. 
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=3in]{images/bilayergraphene.jpg}
+	\end{center}
+	\caption{Diagram showcasing both types of stacking for bilayer graphene. } 
+	\label{fig:bilayergraphene}
+\end{figure}
+
+\subsection{AA stacking}
+
+As seen in the figure below, AA stacking refers to the two layers of graphene stacked perfectly on top of each other. Even though in a graphene sheet all atoms are C, they can be classified into A and B types. Apart from the hopping integral between nearest neighbours within a layer, in order to calculate the electronic bands, we need to consider the value of the hopping integral between layers. We will only consider $\gamma = 0.4 eV$ as the value between atoms directly on top/beneath each other. 
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=3in]{images/AAstacking.jpg}
+	\end{center}
+	\caption{Diagram of AA stacked bilayer graphene. } 
+	\label{fig:AAbilayergraphene}
+\end{figure}
+
+
+The result of this calculation is the following: 
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=3in]{images/AAstackingbands.PNG}
+	\end{center}
+	\caption{Diagram of the electronic bands of a AA stacked bilayer graphene system. } 
+	\label{fig:AAbilayergraphene}
+\end{figure}
+
+We can see that the number of bands doubles, due to the existence of a second graphene sheet in the system. 
+
+\subsection{AB stacking}
+
+Another form of graphene stacking is one where a type A atom is placed on top of a B type atom. This ultimately means that half of the atoms in the bottom and top layer are in the middle of the hexagon above/below, making this configuration the most stable. 
+
+The complexity of this form of bilayer graphene lies on the fact that, depending on the position of the atom, it couples with different strength to its neighbouring ones. This can clearly be seen below. We have considered the following constants for the coupling of the atoms: 
+
+$\gamma _0 = 2.7 eV$, $\gamma_1 = 0.4 eV$, $\gamma_3 = 0.3 eV$, $\gamma_4 = 0.04 eV$
+
+As seen in the following image, the different $\gamma$ constants correspond to the different positions the atoms can have in the bilayer graphene. $\gamma _0$ corresponds to atoms (nearest neighbours) within the same layer,m $\gamma_1$ to atoms directly underneath each other, $\gamma_3$ to atoms that are nearest neighbours between  layers (atoms that do not have another atom directly above or beneath). $\gamma_4$ is the least important hopping integral, corresponding to second nearest neighbours between layers. 
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=3in]{images/ABstacking.png}
+	\end{center}
+	\caption{Diagram of an AB bilayer graphene stacked system. } 
+	\label{fig:ABbilayergraphene}
+\end{figure}
+
+
+When the electron bands were calculated with sisl, the same structure as for AA stacking was obtained (two bands closely correlated that join another two bands). However, these bands appear to be slightly distortioned. 
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=3in]{images/ABstackingbands.PNG}
+	\end{center}
+	\caption{Diagram of the electronic bands of a AB stacked bilayer graphene system. } 
+	\label{fig:ABbilayergraphenebands}
+\end{figure}
+
+\section{Twisted Bilayer Graphene}
+
+Twisted Bilayer Graphene (TBG) is engineered by stacking one graphene layer on top of another at a relative twist angle $\theta$, a procedure which produces a Moiré pattern superlattice potential. This system is a van der Waals heterostructure.
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=2in]{images/moirepatterns.png}
+	\end{center}
+	\caption{Diagram of the Moiré patterns created by twisting a system of two layers of graphene. } 
+	\label{fig:moiregraphene}
+\end{figure}
+
+It has recently been experimentally seen that a small relative twist between the layer induces an insulating and superconducting behaviour in the TBG. These behaviours have never been observed in a isolated single graphene sheet. 
+
+It has been observed that TBG exhibits flat band properties at the magic angle of $\theta = 1.05 \degree$. These bands exhibit insulating states at half-filling, which have been theorised to arise from the electrons of the system being localized in the superlattice that is induced by the Moiré pattern created when the layers are twisted with respect to each other. 
+
+Quantum phenomena such as superconductivity usually arise in condensed matter system that possess a high density of states. This can be created by inducing flat bands in said system, which have weak dispersion in k-space. Hence the TBG exhibiting superconducting behaviour at magic angles.
+
+Theorists proposed years ago that twisting two graphene layers would result in "Moiré bands" appearing. They arise due to the fact that the twist between layers modulates the tunneling carried out by electrons between the two layers in a periodic way.
+
+The band width increases and decreases with the twist angle between the two layers, vanishing completely at some angles denominated "magic angles". The largest one corresponds to the already mentioned $\theta = 1.05 \degree $ 
+
+\subsection{Mini Brillouin zones}
+
+The band structure of TBG at low energy, can be consideres as two sets of monolayer graphene Dirac cones rotated around the $\Gamma$ point by $\theta$. This is the origin of what is denominated "Mini Brillouin Zones", due to the difference between the two K wavevectors, a result of the Moiré superlattice. This can be seen in the following diagram \cite{minibrillouin}. 
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=2in]{images/minibrillouin.PNG}
+	\end{center}
+	\caption{Diagram showcasing the Mini Brillouin zone generated from the difference between the two K wavevectors for the two layers.} 
+	\label{fig:cosmicray}
+\end{figure}
+
+
+When the electron bands were calculated with sisl, the same structure as for AA stacking was obtained (two bands closely correlated that join another two bands). However, these bands appear to be slightly distortioned. 
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=3in]{images/ABstackingbands.PNG}
+	\end{center}
+	\caption{Diagram of the electronic bands of a AB stacked bilayer graphene system. } 
+	\label{fig:ABbilayergraphenebands}
+\end{figure}
+
+\section{Twisted Bilayer Graphene}
+
+Twisted Bilayer Graphene (TBG) is engineered by stacking one graphene layer on top of another at a relative twist angle $\theta$, a procedure which produces a Moiré pattern superlattice potential.
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=2in]{images/moirepatterns.png}
+	\end{center}
+	\caption{Diagram of the Moiré patterns created by twisting a system of two layers of graphene. } 
+	\label{fig:moiregraphene}
+\end{figure}
+
+It has recently been experimentally seen that a small relative twist between the layer induces an insulating and superconducting behaviour in the TBG. These behaviours have never been observed in a isolated single graphene sheet. 
+
+It has been observed that TBG exhibits superconducting properties at the magic angle of $\theta = 1.05 \degree$. This translates into its low energy electronic bands becoming nearly flat at this angle.
+
+Theorists proposed years ago that twisting two graphene layers would result in "Moiré bands" appearing. They arise due to the fact that the twist between layers modulates the tunneling carried out by electrons between the two layers in a periodic way.
+
+The band width increases and decreases with the twist angle between the two layers, vanishing completely at some angles denominated "magic angles". The largest one corresponds to the already mentioned $\theta = 1.05 \degree$ 
+
+\subsection{Mini Brillouin zones}
+
+The band structure of TBG at low energy, can be consideres as two sets of monolayer graphene Dirac cones rotated around the $\Gamma$ point by $\theta$. This is the origin of what is denominated "Mini Brillouin Zones", due to the difference between the two K wavevectors, a result of the Moiré superlattice. This can be seen in the following diagram \cite{minibrillouin}. 
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=2in]{images/minibrillouin.PNG}
+	\end{center}
+	\caption{Diagram showcasing the Mini Brillouin zone generated from the difference between the two K wavevectors for the two layers.} 
+	\label{fig:cosmicray}
+\end{figure}
+
+
+The Dirac cones near the K valley participate in an interlayer hybridization, and the interaction between distant cones is suppressed \cite{diraccones}.
+
+\subsection{Unconventional Superconductivity}
+
+As previously mentioned, unconventional superconductivity at "magic angles" has been experimentally observed. This is potentially one of the most interesting features of Twisted Bilayer Graphene, since it could lead in the near future to a deeper understanding of the properties of superconductivity. 
+
+As TBG is doped, it differs from the insulating state described above and start exhibiting superconducting behaviour. Superconductivity has been observed at temperatures as high as 1.7K \cite{superconductor}. 
+
+
+
+
+\begin{thebibliography}{99}
+	
+	\bibitem{minibrillouin}
+	Yuan Cao \textit{et al.}, "Correlated Insulator Behaviour at half-filling magic-angle graphene superlattices", \textit{Nature}, Vol 556, 2018.
+	
+	\bibitem{diraccones}
+	Bistritzer, R. \& MacDonald, A. H. "Moiré Bands in twisted double-layer graphene" \textit{Proc. Natl Acad. Sci USA}, Vol. 108, 2011.
+	
+	\bibitem{superconductor}
+	Yuan Cao \textit{et al.}, "Unconventional superconductivity in magic-angle graphene superlattices", \textit{Nature}, Vol. 556, April 2018.
+\end{thebibliography}
+
+\end{document} 
